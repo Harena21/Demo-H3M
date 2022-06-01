@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+  
+{% block body %}
+<div class="container">
+    <div class="d-flex justify-content-between mb-3 mt-3">
+        <h1>
+           Fiche de présence
+        </h1>
+        <a href="{{ path('admin_employee') }}" class="btn btn-info">Liste des employés</a>
+    </div>
+    {% set salaire = 0 %}
+    {# {% for message in app.flashes('success') %}
+        <div class="alert alert-success"> {{ message }}</div>
+    {% endfor %} #}
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Lun</th>
+                <th>Mar</th>
+                <th>Mer</th>
+                <th>Jeu</th>
+                <th>Ven</th>
+                <th>Sam</th>
+                <th>Salaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.nom }} {{ employee.prenoms }}</td>
+                    <td style="border-color:black;"{% if employee.monday and employee.status[0] is same as (2) %} class="bg-success" {% elseif employee.monday and employee.status[0] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
+                    <td style="border-color:black;"{% if employee.tuesday and employee.status[1] is same as (2) %} class="bg-success" {% elseif employee.tuesday and employee.status[1] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
+                    <td style="border-color:black;"{% if employee.wednesday and employee.status[2] is same as (2) %} class="bg-success" {% elseif employee.wednesday and employee.status[2] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
+                    <td style="border-color:black;"{% if employee.thursday and employee.status[3] is same as (2) %} class="bg-success" {% elseif employee.thursday and employee.status[3] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
+                    <td style="border-color:black;"{% if employee.friday and employee.status[4] is same as (2) %} class="bg-success" {% elseif employee.friday and employee.status[4] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
+                    <td style="border-color:black;"{% if employee.saturday and employee.status[5] is same as (2) %} class="bg-success" {% elseif employee.saturday and employee.status[5] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
+                    <td style="border-color:black;">{{ employee.salaire }} MGA</td>
+                    {% set salaire = salaire + employee.salaire %}
+                    {# <td>
+                        <a href="{{ path('admin_employee_edit', {id: employee.id})}}" class="btn btn-secondary">Editer</a>
+                        <form method="post" action="{{ path('admin_employee_delete', {id: employee.id})}}" style="display: inline-block" onsubmit="return confirm('Are you sure?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ employee.id) }}">
+                        <button class="btn btn-danger">Supprimer<button>
+                        </form>
+                    </td> #}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h4 class="mb-3"><u>Total à payer</u>:  {{ salaire }} MGA </h4>
+    
+        <div class="text-right">
+            <a href="{{ path('admin_employee_renew') }}" class="btn btn-warning">Renouvellement</a>
+        </div>
+</div>
+{% endblock %}

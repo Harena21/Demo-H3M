@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+{# <h1> 
+    {% if editForm %}
+    Modification de l'article {{ article.id}}
+    {% else %}
+    Création d'un article
+    {% endif %}
+</h1> #}
+
+{{ form_start(form) }}
+    {{ form_row(form.title, {attr: {placeholder: "Entrez le titre de l'article"} }) }}
+    {{ form_row(form.content, {attr: {placeholder: "Entrez le contenu de l'article"} }) }}
+    {{ form_row(form.category) }}
+    {{ form_row(form.image, {attr: {placeholder: "Entrez l'URL de l'image"} }) }}
+    <button type="submit" class="btn btn-success mt-2">
+    {% if editForm %}
+    Modifier l'article
+    {% else %}
+    Créer un article
+    {% endif %}
+    </button>
+{{form_end(form) }}
+{% endblock %}

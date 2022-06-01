@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+  
+{% block body %}
+<div class="container">
+    <div class="d-flex justify-content-between mt-3">
+        <h1>
+            Gérer les employés
+        </h1>
+        <a href="{{ path('admin_employee_plan') }}" class="btn btn-info">Voir la fiche de présence</a>
+    </div>
+    
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success"> {{ message }}</div>
+    {% endfor %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénoms</th>
+                <th>Numéro CIN</th>
+                <th>Groupes</th>
+                <th>Spécialités</th>
+                <th>Code chantier</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.nom }}</td>
+                    <td>{{ employee.prenoms }}</td>
+                    <td>{{ employee.numeroCin }}</td>
+                    <td>{{ employee.groupes }}</td>
+                    <td>{{ employee.specialites }}</td>
+                    <td>{{ employee.codeChantier }}</td>
+                    <td>
+                        <a href="{{ path('admin_employee_edit', {id: employee.id})}}" class="btn btn-secondary">Editer</a>
+                        <form method="post" action="{{ path('admin_employee_delete', {id: employee.id})}}" style="display: inline-block" onsubmit="return confirm('Are you sure?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ employee.id) }}">
+                        <button class="btn btn-danger">Supprimer<button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <div class="text-right">
+            <a href="{{ path('admin_employee_create') }}" class="btn btn-success">Créer un employee</a>
+        </div>
+</div>
+{% endblock %}

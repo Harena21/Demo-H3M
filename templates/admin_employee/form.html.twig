@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+{# <h1> 
+    {% if editForm %}
+    Modification de l'article {{ article.id}}
+    {% else %}
+    Création d'un article
+    {% endif %}
+</h1> #}
+
+{{ form_start(form) }}
+    {{ form_row(form.nom, {attr: {placeholder: "Entrez le nom de l'employé"} }) }}
+    {{ form_row(form.prenoms, {attr: {placeholder: "Entrez le prénom de l'employé"} }) }}
+    {{ form_row(form.numero_cin, {attr: {placeholder: "Entrez le numéro CIN de l'employé"} }) }}
+    {{ form_row(form.groupes, {attr: {placeholder: "Entrez le groupe de l'employé"} }) }}
+    {{ form_row(form.specialites, {attr: {placeholder: "Entrez la spécialité de l'employé"} }) }}
+    {{ form_row(form.code_chantier, {attr: {placeholder: "Entrez le code chantier de l'employé"} }) }}
+    <div class="d-flex justify-content-between mt-4">
+        {{ form_row(form.monday) }}
+        {{ form_row(form.tuesday) }}
+        {{ form_row(form.wednesday) }}
+        {{ form_row(form.thursday) }}
+        {{ form_row(form.friday) }}
+        {{ form_row(form.saturday) }}
+    </div>
+    <button type="submit" class="btn btn-success mt-2">
+    {% if editForm %}
+    Modifier un employé
+    {% else %}
+    Créer un employé
+    {% endif %}
+    </button>
+{{form_end(form) }}
+{% endblock %}

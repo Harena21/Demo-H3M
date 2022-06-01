@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration des commentaires{% endblock %}
+  
+{% block body %}
+<div class="container">
+    <h1>
+        Modérer les commentaires
+    </h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success"> {{ message }}</div>
+    {% endfor %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Auteur</th>
+                <th>Commentaire(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.author }} ({{ comment.article.title | length >15 ? comment.article.title | slice(0,15) ~ '...' : comment.article.title }})</td>
+                    <td>
+                        {{ comment.content }}
+                        {# <a href="{{ path('admin_article_edit', {id: article.id})}}" class="btn btn-secondary">Editer</a>
+                        <form method="post" action="{{ path('admin_article_delete', {id: article.id})}}" style="display: inline-block" onsubmit="return confirm('Are you sure?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                        <button class="btn btn-danger">Supprimer<button>
+                        </form> #}
+                    </td>
+                    <td>
+                        <form action="{{ path('admin_comment_moderate', { 'id': comment.id }) }}" method="POST">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="mode" value=true  onChange="this.form.submit()" {% if comment.mode %} checked {% endif %}/>Publier<br/>
+                                <input class="form-check-input" type="radio" name="mode" value=false onChange="this.form.submit()" {% if comment.mode is same as (false) %} checked {% endif %}/>Refuser<br/>
+                                {# <button class="btn btn-primary" type="submit">Mettre à jour</button>                            #}
+                        </div>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {# <div class="text-right">
+        <a href="{{ path('admin_article_create') }}" class="btn btn-success">Créer un bien</a>
+    </div> #}
+</div>
+{% endblock %}
