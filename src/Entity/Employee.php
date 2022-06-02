@@ -95,11 +95,16 @@ class Employee
      */
     private $code_chantier;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $renvoi;
+
     
-    // public function __construct()
-    // {
-    //     $this->status = [0,0,0,0,0,0];
-    // }
+    public function __construct()
+    {
+        $this->renvoi = false;
+    }
 
     public function getId(): ?int
     {
@@ -171,7 +176,7 @@ class Employee
         return $this->monday;
     }
 
-    public function setMonday(?int $monday): self
+    public function setMonday(?bool $monday): self
     {
         $this->monday = $monday;
 
@@ -183,7 +188,7 @@ class Employee
         return $this->tuesday;
     }
 
-    public function setTuesday(?int $tuesday): self
+    public function setTuesday(?bool $tuesday): self
     {
         $this->tuesday = $tuesday;
 
@@ -195,7 +200,7 @@ class Employee
         return $this->wednesday;
     }
 
-    public function setWednesday(?int $wednesday): self
+    public function setWednesday(?bool $wednesday): self
     {
         $this->wednesday = $wednesday;
 
@@ -207,7 +212,7 @@ class Employee
         return $this->thursday;
     }
 
-    public function setThursday(?int $thursday): self
+    public function setThursday(?bool $thursday): self
     {
         $this->thursday = $thursday;
 
@@ -219,7 +224,7 @@ class Employee
         return $this->friday;
     }
 
-    public function setFriday(?int $friday): self
+    public function setFriday(?bool $friday): self
     {
         $this->friday = $friday;
 
@@ -231,7 +236,7 @@ class Employee
         return $this->saturday;
     }
 
-    public function setSaturday(?int $saturday): self
+    public function setSaturday(?bool $saturday): self
     {
         $this->saturday = $saturday;
 
@@ -240,7 +245,26 @@ class Employee
 
     public function getSalaire(): ?int
     {
-        return ($this->monday + $this->tuesday + $this->wednesday + $this->thursday + $this->friday + $this->saturday)*$this->salaire;
+        $sum = [];
+        if($this->status[0] == 2) $sum[] = 1;
+        else $sum[] = 0;
+
+        if($this->status[1] == 2) $sum[] = 1;
+        else $sum[] = 0;
+
+        if($this->status[2] == 2) $sum[] = 1;
+        else $sum[] = 0;
+
+        if($this->status[3] == 2) $sum[] = 1;
+        else $sum[] = 0;
+
+        if($this->status[4] == 2) $sum[] = 1;
+        else $sum[] = 0;
+
+        if($this->status[5] == 2) $sum[] = 1;
+        else $sum[] = 0;
+
+        return ($sum[0] + $sum[1] + $sum[2] + $sum[3] + $sum[4] + $sum[5])*$this->salaire;
     }
 
     public function setSalaire(?int $salaire): self
@@ -270,6 +294,18 @@ class Employee
     public function setCodeChantier(string $code_chantier): self
     {
         $this->code_chantier = $code_chantier;
+
+        return $this;
+    }
+
+    public function getRenvoi(): ?bool
+    {
+        return $this->renvoi;
+    }
+
+    public function setRenvoi(bool $renvoi): self
+    {
+        $this->renvoi = $renvoi;
 
         return $this;
     }

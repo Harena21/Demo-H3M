@@ -38,16 +38,16 @@
                             {% if is_granted('ROLE_ADMIN') %}
                                 <ul> 
                                     <li class="navbar-nav ml-auto">
-                                    <a class="nav-link " href="{{ path('admin_article') }}">Administrer les articles</a>
+                                    <a class="nav-link " href="{{ path('admin_employee_plan') }}">Administrer les employés</a>
                                     </li>
                                 </ul>
-                                <ul> 
+                                {# <ul> 
                                     <li class="navbar-nav ml-auto">
                                     <a class="nav-link " href="{{ path('admin_comment_show') }}">Modérer les commentaires</a>
                                     </li>
-                                </ul>
+                                </ul> #}
                             {% endif %}
-                         {% endif %}
+                        {% endif %}
                         <ul> 
                             <li class="navbar-nav ml-auto">
                             <a class="nav-link " href="{{ path('security_logout') }}">Déconnexion</a>

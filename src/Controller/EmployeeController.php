@@ -24,6 +24,7 @@ class EmployeeController extends AbstractController
     public function index(EmployeeRepository $repo): Response
     {
         $employees = $repo->findAll();
+        // dd($employees);
         return $this->render('admin_employee/index.html.twig', [
             'employees' => $employees,
         ]);
@@ -76,7 +77,7 @@ class EmployeeController extends AbstractController
                 }
                 else if($employee->getGroupes() === 'Chef de chantier')
                 {
-                    $employee->setSalaire(20000);
+                    $employee->setSalaire(18000);
                 }
                 else
                 {
@@ -137,7 +138,7 @@ class EmployeeController extends AbstractController
             $manager->persist($employee);
             $manager->flush();
 
-            return $this->redirectToRoute("admin_employee");
+            return $this->redirectToRoute("admin_employee_plan");
         }
         return $this->render('admin_employee/form.html.twig',[
             'form' => $form->createView(),
@@ -153,9 +154,12 @@ class EmployeeController extends AbstractController
     {
         if($this->isCsrfTokenValid('delete' . $employee->getId(),$request->get('_token')))
         {
-            $em->remove($employee);
+            // $em->remove($employee);
+            $employee->setRenvoi(true);
             $em->flush();
-            $this->addFlash('success',"Employé supprimé");
+            
+            // dd($employee);
+            $this->addFlash('success',"Employé renvoyé");
 
             return new RedirectResponse("/admin_employee");
 
@@ -168,7 +172,19 @@ class EmployeeController extends AbstractController
     {
         $employees = $repo->findAll();
         // dd($employees,$this->getUser());
+        $now = new \DateTime();
+        if($now->format("w") === '1')
+        {
+            $dt = $now;
+        }
+        else
+        {
+            // $dt = new \DateTime('2022-05-29'); 
+            $now->setTime(0, 0, 0);
+            $dt = $now->modify('last monday');
+        }
         return $this->render('admin_employee/plan.html.twig', [
+            'date' => $dt,
             'employees' => $employees,
         ]);
     }

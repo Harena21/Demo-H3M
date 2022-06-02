@@ -14,32 +14,35 @@
     {# {% for message in app.flashes('success') %}
         <div class="alert alert-success"> {{ message }}</div>
     {% endfor %} #}
-    <table class="table table-bordered">
-        <thead class="thead-dark">
+    <table class="table">
+        <thead class="thead-dark border">
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
-                <th>Lun</th>
-                <th>Mar</th>
-                <th>Mer</th>
-                <th>Jeu</th>
-                <th>Ven</th>
-                <th>Sam</th>
+                <th>Lun {{ date|date("d/m") }}</th>
+                <th>Mar {{date|date_modify("+1 day")|date("d/m")}}</th>
+                <th>Mer {{date|date_modify("+2 day")|date("d/m")}}</th>
+                <th>Jeu {{date|date_modify("+3 day")|date("d/m")}}</th>
+                <th>Ven {{date|date_modify("+4 day")|date("d/m")}}</th>
+                <th>Sam {{date|date_modify("+5 day")|date("d/m")}}</th>
+                
                 <th>Salaire</th>
+                <th style="border: 0;">Confirmation</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="border">
             {% for employee in employees %}
                 <tr>
-                    <td>{{ employee.id }}</td>
-                    <td>{{ employee.nom }} {{ employee.prenoms }}</td>
-                    <td style="border-color:black;"{% if employee.monday and employee.status[0] is same as (2) %} class="bg-success" {% elseif employee.monday and employee.status[0] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
-                    <td style="border-color:black;"{% if employee.tuesday and employee.status[1] is same as (2) %} class="bg-success" {% elseif employee.tuesday and employee.status[1] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
-                    <td style="border-color:black;"{% if employee.wednesday and employee.status[2] is same as (2) %} class="bg-success" {% elseif employee.wednesday and employee.status[2] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
-                    <td style="border-color:black;"{% if employee.thursday and employee.status[3] is same as (2) %} class="bg-success" {% elseif employee.thursday and employee.status[3] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
-                    <td style="border-color:black;"{% if employee.friday and employee.status[4] is same as (2) %} class="bg-success" {% elseif employee.friday and employee.status[4] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
-                    <td style="border-color:black;"{% if employee.saturday and employee.status[5] is same as (2) %} class="bg-success" {% elseif employee.saturday and employee.status[5] is same as (1) %} class="bg-warning"  {% else %} class="bg-danger" {% endif %}></td>
-                    <td style="border-color:black;">{{ employee.salaire }} MGA</td>
+                    <td class="border">{{ employee.id }}</td>
+                    <td class="border">{{ employee.nom }} {{ employee.prenoms }}</td>
+                    <td {% if employee.monday and employee.status[0] is same as (2) %} class="bg-success border" {% elseif employee.monday and employee.status[0] is same as (1) %} class="bg-warning border"  {% else %} class="bg-danger border" {% endif %}></td>
+                    <td {% if employee.tuesday and employee.status[1] is same as (2) %} class="bg-success border" {% elseif employee.tuesday and employee.status[1] is same as (1) %} class="bg-warning border"  {% else %} class="bg-danger border" {% endif %}></td>
+                    <td {% if employee.wednesday and employee.status[2] is same as (2) %} class="bg-success border" {% elseif employee.wednesday and employee.status[2] is same as (1) %} class="bg-warning border"  {% else %} class="bg-danger border" {% endif %}></td>
+                    <td {% if employee.thursday and employee.status[3] is same as (2) %} class="bg-success border" {% elseif employee.thursday and employee.status[3] is same as (1) %} class="bg-warning border"  {% else %} class="bg-danger border" {% endif %}></td>
+                    <td {% if employee.friday and employee.status[4] is same as (2) %} class="bg-success border" {% elseif employee.friday and employee.status[4] is same as (1) %} class="bg-warning border"  {% else %} class="bg-danger border" {% endif %}></td>
+                    <td {% if employee.saturday and employee.status[5] is same as (2) %} class="bg-success border" {% elseif employee.saturday and employee.status[5] is same as (1) %} class="bg-warning border"  {% else %} class="bg-danger border" {% endif %}></td>
+                    <td class="bg-dark text-white">{{ employee.salaire|format_currency('MGA') }}</td>
+                    <td style="border: none !important;"><a href="{{ path('admin_employee_edit', {id: employee.id})}}" class="btn btn-warning {% if employee.renvoi is same as(true) or not is_granted('ROLE_ADMIN') %}disabled{% endif %}" >{% if app.user.username is same as ('Lanto') %} Confirmer {% else %}Editer{% endif %}</a></td>
                     {% set salaire = salaire + employee.salaire %}
                     {# <td>
                         <a href="{{ path('admin_employee_edit', {id: employee.id})}}" class="btn btn-secondary">Editer</a>
@@ -53,10 +56,10 @@
             {% endfor %}
         </tbody>
     </table>
-    <h4 class="mb-3"><u>Total à payer</u>:  {{ salaire }} MGA </h4>
+    <h4 class="mb-3"><u>Total à payer</u>:  {{ salaire|format_currency('MGA') }} </h4>
     
         <div class="text-right">
-            <a href="{{ path('admin_employee_renew') }}" class="btn btn-warning">Renouvellement</a>
+            <a href="{{ path('admin_employee_renew') }}" class="btn btn-success {% if not is_granted('ROLE_ADMIN') %}disabled{% endif %}" onclick="return confirm('Voulez-vous vraiment renouveller?')">Renouvellement</a>
         </div>
 </div>
 {% endblock %}

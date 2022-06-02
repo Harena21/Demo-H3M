@@ -87,9 +87,8 @@ class EmployeeType extends AbstractType
                 'placeholder' => 'Code chantier',
                 'choices' => [
                     'Code' => [
-                        'A' => 'A',
-                        'B' => 'B',
-                        'C' => 'C',
+                        'M001' => 'M001',
+                        'M006' => 'M006',
                     ],
                 ],
                 'required' => true
